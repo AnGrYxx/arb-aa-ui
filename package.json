@@ -1,0 +1,15 @@
+{
+  "name": "arb-aa-ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Antonius Gress",
+  "license": "ISC",
+  "dependencies": {
+    "obyte": "^0.1.9",
+    "requirejs": "^2.3.6"
+  }
+}
