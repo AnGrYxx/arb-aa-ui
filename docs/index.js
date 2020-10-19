@@ -11,7 +11,7 @@ function getAaStateVars () {
     client.api.getAaStateVars(params, function (err, result) {
         var supply = result.shares_supply / 1000000000;
         document.getElementById("supply").innerHTML = supply;
-        return supply;
+        return result
     })
 }
 
@@ -30,16 +30,15 @@ function getAaBalances() {
         const requests = [];
         requests.push(Promise.resolve(result));
 
-    
-            const grdPrice = getGrdPrice();
-            requests.push(grdPrice);
+        const grdPrice = getGrdPrice();
+        requests.push(grdPrice);
+
+        const aaStateVars = client.api.getAaStateVars(params, function (err, result) {
+            return result
+        })
+        requests.push(aaStateVars);
         
         return Promise.all(requests);
-        // var base_stable = result.PVL22DMGM57FOYKJRPKMQBFM2BUSJLDU.base.stable / 1000000000;
-        // var growthToken_stable = result.PVL22DMGM57FOYKJRPKMQBFM2BUSJLDU['YtEVK0inFAj3cQ3CPkJl5Kb8Ax+VlI/dqcOb6GQP64k='].stable / 1000000000;
-        // var base_pending = result.PVL22DMGM57FOYKJRPKMQBFM2BUSJLDU.base.pending / 1000000000;
-        // var growthToken_pending = result.PVL22DMGM57FOYKJRPKMQBFM2BUSJLDU['YtEVK0inFAj3cQ3CPkJl5Kb8Ax+VlI/dqcOb6GQP64k='].pending / 1000000000;
-        // document.getElementById("assets").innerHTML = `${base_stable + base_pending} GBYTE + ${growthToken_stable + growthToken_pending} GRD = `;
     })
     .then(data => {
         console.log("xxx");
@@ -54,6 +53,8 @@ function getAaBalances() {
         var grdPrice = data[1].GRD.last_gbyte_value;
         var totalPrice = base_total + growthToken_total *grdPrice;
         var base_percentage = base_total / totalPrice * 100;
+        var grdarb_supply = data[2].shares_supply / 1000000000;
+        document.getElementById("share_value").innerHTML = `${(totalPrice / grdarb_supply).toFixed(2)} GBYTE per GRDARB`;
         document.getElementById("assets").innerHTML = `${(base_total).toFixed(2)} GBYTE (${base_percentage.toFixed(2)} %) + ${growthToken_total.toFixed(2)} GRD (${(100 - base_percentage).toFixed(2)} %) = ${totalPrice.toFixed(2)} GBYTE`;
     })
     
