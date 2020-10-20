@@ -3,6 +3,7 @@
 // Connect to mainnet official node 'wss://obyte.org/bb'
 const client = new obyte.Client();
 
+// default
 const params = {
     address: 'PVL22DMGM57FOYKJRPKMQBFM2BUSJLDU'
 };
@@ -15,13 +16,10 @@ function getAaStateVars (params) {
     })
 }
 
-getAaStateVars({
-    address: 'PVL22DMGM57FOYKJRPKMQBFM2BUSJLDU'
-});
-
+getAaStateVars(params);
 
 const addresses = [
-    'PVL22DMGM57FOYKJRPKMQBFM2BUSJLDU'
+    params.address
 ];
 
 function getAaBalances(params2) {
@@ -60,7 +58,10 @@ function getAaBalances(params2) {
         var base_percentage = base_total / totalPrice * 100;
         var grdarb_supply = data[2].shares_supply / 1000000000;
         document.getElementById("share_value").innerHTML = `${(totalPrice / grdarb_supply).toFixed(2)}`;
-        document.getElementById("assets").innerHTML = `${(base_total).toFixed(2)} GBYTE (${base_percentage.toFixed(2)} %) + ${growthToken_total.toFixed(2)} ${valueTwo} (${(100 - base_percentage).toFixed(2)} %) = ${totalPrice.toFixed(2)} GBYTE`;
+        document.getElementById("assets").innerHTML = `
+            ${(base_total).toFixed(2)} GBYTE (${base_percentage.toFixed(2)} %)<br>
+            + ${growthToken_total.toFixed(2)} ${valueTwo} (${(100 - base_percentage).toFixed(2)} %)<br>
+            = ${totalPrice.toFixed(2)} GBYTE`;
     })
     
 }
