@@ -1,7 +1,8 @@
 'use strict';
 
 // Connect to mainnet official node 'wss://obyte.org/bb'
-const client = new obyte.Client();
+const options = { reconnect: true };
+const client = new obyte.Client('wss://obyte.org/bb', options);
 
 // default
 const params = {
