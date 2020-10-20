@@ -62,6 +62,16 @@ function getAaBalances(params2) {
             ${(base_total).toFixed(2)} GBYTE (${base_percentage.toFixed(2)} %)<br>
             + ${growthToken_total.toFixed(2)} ${valueTwo} (${(100 - base_percentage).toFixed(2)} %)<br>
             = ${totalPrice.toFixed(2)} GBYTE`;
+        document.getElementById("actions").innerHTML = `
+        <a href="obyte:${key1[0]}?asset=base">
+            <button class="button is-small is-primary">add GBYTE</button>
+        </a>
+        <a href="obyte:${key1[0]}?asset=${encodeURIComponent(key2[1])}">
+            <button class="button is-small is-primary">add ${valueTwo}</button>
+        </a>
+        <a href="obyte:${key1[0]}?asset=${encodeURIComponent(data[2].shares_asset)}">
+            <button class="button is-small is-primary">withdraw</button>
+        </a>`;
     })
     
 }
