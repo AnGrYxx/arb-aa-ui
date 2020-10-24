@@ -11,6 +11,7 @@ const params = {
 
 function getAaStateVars (params) {
     client.api.getAaStateVars(params, function (err, result) {
+        console.log(result);
         var supply = (result.shares_supply / 1000000000).toFixed(2);
         document.getElementById("supply").innerHTML = supply;
         return result
@@ -82,7 +83,7 @@ function getAaBalances(params2) {
             var interestDecimals = $('#arb').val().split(',')[3]; // decimals of interest and stable token
             var interestTokenPrice = data[1][interestToken].last_gbyte_value;
             var stableTokenPrice = data[1][stableToken].last_gbyte_value;
-            var arb_supply = data[2].shares_supply / 100000;
+            var arb_supply = data[2].shares_supply / interestDecimals;
             if (!data[0][key1][key2[2]]) {
                 // case if only interest token and gbyte in assets
                 var interest_pending = data[0][key1][key2[1]].pending / interestDecimals;
@@ -102,7 +103,7 @@ function getAaBalances(params2) {
                     <button class="button is-small is-primary">withdraw</button>
                 </a>`;
             } else {
-                //case if interest tokens and stable tokens and arb asset in AA balance
+                //case if interest tokens and stable tokens and arb asset in AA balance, e.g USD
                 var interest_pending = data[0][key1][key2[2]].pending / interestDecimals;
                 var interest_stable = data[0][key1][key2[2]].stable / interestDecimals;
                 var interest_total = interest_pending + interest_stable;
