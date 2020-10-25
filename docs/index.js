@@ -18,7 +18,7 @@ function getAaStateVars (params) {
     })
 }
 
-getAaStateVars(params);
+// getAaStateVars(params);
 
 const addresses = [
     params.address
@@ -133,7 +133,7 @@ function getAaBalances(params2) {
     
 }
 
-getAaBalances(addresses);
+// getAaBalances(addresses);
 
 
 function getGrdPrice() {
@@ -145,7 +145,14 @@ function getGrdPrice() {
 
 }
 
-getGrdPrice();
+// getGrdPrice();
+
+
+$(document).ready(function() {
+    getAaStateVars(params);
+    getAaBalances(addresses);
+    getGrdPrice();
+});
 
 
 
