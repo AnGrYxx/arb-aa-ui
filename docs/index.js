@@ -3,26 +3,7 @@
 // Connect to mainnet official node 'wss://obyte.org/bb'
 const options = { reconnect: true };
 const client = new obyte.Client('wss://obyte.org/bb', options);
-
-// default
-const params = {
-    address: 'PVL22DMGM57FOYKJRPKMQBFM2BUSJLDU'
-};
-
-function getAaStateVars (params) {
-    client.api.getAaStateVars(params, function (err, result) {
-        console.log(result);
-        var supply = (result.shares_supply / 1000000000).toFixed(2);
-        document.getElementById("supply").innerHTML = supply;
-        return result
-    })
-}
-
-// getAaStateVars(params);
-
-const addresses = [
-    params.address
-];
+const assetPrices = fetch(`https://data.ostable.org/api/v1/assets`).then(response => response.json());
 
 function getAaBalances(params2) {
     client.api.getBalances(params2, function (err, result) {
@@ -33,9 +14,7 @@ function getAaBalances(params2) {
         var params = {address: xyz[0]};
         const requests = [];
         requests.push(Promise.resolve(result));
-
-        const grdPrice = getGrdPrice();
-        requests.push(grdPrice);
+        requests.push(assetPrices);
 
         const aaStateVars = client.api.getAaStateVars(params, function (err, result) {
             return result
@@ -133,34 +112,12 @@ function getAaBalances(params2) {
     
 }
 
-// getAaBalances(addresses);
-
-
-function getGrdPrice() {
-
-    return fetch(`https://data.ostable.org/api/v1/assets`)
-    .then(response => {
-        return response.json()
-    })
-
-}
-
-// getGrdPrice();
-
-
-$(document).ready(function() {
-    getAaStateVars(params);
-    getAaBalances(addresses);
-    getGrdPrice();
-});
-
-
-
-$('#arb').on('change', function() {
+function update() {
     $('#supply-arb-type').text($('#arb option:selected').text());
     $('#supply-arb-type2').text($('#arb option:selected').text());
-    getAaStateVars({address: this.value.split(',')[0]});
-    getAaBalances([this.value.split(',')[0]]);
-  });
+    var address = $('#arb').val().split(',')[0];
+    getAaBalances([address]);
+}
 
-
+$(document).ready(update);
+$('#arb').on('change', update);
