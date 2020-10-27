@@ -1,9 +1,9 @@
 'use strict';
 
 // Connect to mainnet official node 'wss://obyte.org/bb'
-const options = { reconnect: true };
-const client = new obyte.Client('wss://obyte.org/bb', options);
-const assetPrices = fetch(`https://data.ostable.org/api/v1/assets`).then(response => response.json());
+var options = { reconnect: true };
+var client = new obyte.Client('wss://obyte.org/bb', options);
+var assetPrices = fetch(`https://data.ostable.org/api/v1/assets`).then(response => response.json());
 
 function getAaBalances(params2) {
     client.api.getBalances(params2, function (err, result) {
@@ -12,11 +12,11 @@ function getAaBalances(params2) {
     .then(result => {
         var xyz = Object.keys(result);
         var params = {address: xyz[0]};
-        const requests = [];
+        var requests = [];
         requests.push(Promise.resolve(result));
         requests.push(assetPrices);
 
-        const aaStateVars = client.api.getAaStateVars(params, function (err, result) {
+        var aaStateVars = client.api.getAaStateVars(params, function (err, result) {
             return result
         })
         requests.push(aaStateVars);
