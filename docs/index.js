@@ -39,7 +39,7 @@ function getAaBalances(params2) {
             var totalPrice = base_total + (growthToken_total*growthTokenPrice);
             var base_percentage = base_total / totalPrice * 100;
             var arb_supply = data[2].shares_supply / 1000000000;
-            document.getElementById("supply").innerHTML = `${arb_supply}`;
+            document.getElementById("supply").innerHTML = `${arb_supply} <br><a href="https://explorer.obyte.org/#${key1[0]}" target="_blank">(see on explorer)</a>`;
             document.getElementById("share_value").innerHTML = `${(totalPrice / arb_supply).toFixed(2)}`;
             document.getElementById("assets").innerHTML = `
                 ${(base_total).toFixed(2)} GBYTE (${base_percentage.toFixed(2)} %)<br>
@@ -69,7 +69,7 @@ function getAaBalances(params2) {
                 var interest_stable = data[0][key1][key2[1]].stable / interestDecimals;
                 var interest_total = interest_pending + interest_stable;
                 var totalPrice = interestTokenPrice * interest_total;
-                document.getElementById("supply").innerHTML = `${arb_supply}`;
+                document.getElementById("supply").innerHTML = `${arb_supply} <br><a href="https://explorer.obyte.org/#${key1[0]}" target="_blank">(see on explorer)</a>`;
                 document.getElementById("share_value").innerHTML = `${(totalPrice / arb_supply).toFixed(2)}`;
                 document.getElementById("assets").innerHTML = `
                     ${interest_total.toFixed(2)} ${t1OrInterestTokenName} (100 %)<br>
@@ -91,7 +91,7 @@ function getAaBalances(params2) {
                 var stable_total = stable_pending + stable_stable;
                 var totalPrice = (interestTokenPrice * interest_total) + (stableTokenPrice * stable_total);
                 var interest_percentage = (interestTokenPrice * interest_total) / ((interestTokenPrice * interest_total) + (stableTokenPrice * stable_total)) *100;
-                document.getElementById("supply").innerHTML = `${arb_supply}`;
+                document.getElementById("supply").innerHTML = `${arb_supply} <br><a href="https://explorer.obyte.org/#${key1[0]}" target="_blank">(see on explorer)</a>`;
                 document.getElementById("share_value").innerHTML = `${(totalPrice / arb_supply).toFixed(2)}`;
                 document.getElementById("assets").innerHTML = `
                     ${interest_total.toFixed(2)} ${interestToken} (${interest_percentage.toFixed(2)} %)<br>
