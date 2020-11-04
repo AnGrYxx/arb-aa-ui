@@ -29,11 +29,11 @@ function getAaBalances(params2) {
         var t1OrInterestTokenName = $('#arb').val().split(',')[1]; // t1 or interest token name
         if (key1[0] === "PVL22DMGM57FOYKJRPKMQBFM2BUSJLDU" || key1[0] === "Y3NP6UMNFMA6DU2DGPJN4HB65KHKVAKR" || key1[0] === "YSGAUS4DWUORJMV3TEZXPCAEFCT4FGO3" || key1[0] === "USKWYTYD4NKBIOGPFGROG5NNTQQLISYB" || key1[0] === "6DV4SOBQ5XCC44242HTRXJMRQUXYZFSI" || key1[0] === "6KGD2SIKEIMWKUWC5E5265JKMMZHFWF2") {
             // if t1/reserve arb
-            var base_stable = data[0][key1].base.stable / 1000000000;
-            var base_pending = data[0][key1].base.pending / 1000000000;
+            var base_stable = data[0][key1].base.stable ? data[0][key1].base.stable / 1000000000 : 0;
+            var base_pending = data[0][key1].base.pending ? data[0][key1].base.pending / 1000000000 : 0;
             var base_total = base_stable + base_pending;
-            var growthToken_pending = data[0][key1][key2[1]].pending / 1000000000;
-            var growthToken_stable = data[0][key1][key2[1]].stable / 1000000000;
+            var growthToken_pending = data[0][key1][key2[1]].pending ? data[0][key1][key2[1]].pending / 1000000000 : 0;
+            var growthToken_stable = data[0][key1][key2[1]].stable ? data[0][key1][key2[1]].stable / 1000000000 : 0;
             var growthToken_total = growthToken_stable + growthToken_pending;
             var growthTokenPrice = data[1][t1OrInterestTokenName].last_gbyte_value;
             var totalPrice = base_total + (growthToken_total*growthTokenPrice);
@@ -65,8 +65,8 @@ function getAaBalances(params2) {
             var arb_supply = data[2].shares_supply / interestDecimals;
             if (!data[0][key1][key2[2]]) {
                 // case if only interest token and gbyte in assets
-                var interest_pending = data[0][key1][key2[1]].pending / interestDecimals;
-                var interest_stable = data[0][key1][key2[1]].stable / interestDecimals;
+                var interest_pending = data[0][key1][key2[1]].pending ? data[0][key1][key2[1]].pending / interestDecimals : 0;
+                var interest_stable = data[0][key1][key2[1]].stable ? data[0][key1][key2[1]].stable / interestDecimals : 0;
                 var interest_total = interest_pending + interest_stable;
                 var totalPrice = interestTokenPrice * interest_total;
                 document.getElementById("supply").innerHTML = `${arb_supply} <br><a href="https://explorer.obyte.org/#${key1[0]}" target="_blank">(see on explorer)</a>`;
@@ -83,11 +83,11 @@ function getAaBalances(params2) {
                 </a>`;
             } else {
                 //case if interest tokens and stable tokens and arb asset in AA balance, e.g USD
-                var interest_pending = data[0][key1][key2[2]].pending / interestDecimals;
-                var interest_stable = data[0][key1][key2[2]].stable / interestDecimals;
+                var interest_pending = data[0][key1][key2[2]].pending ? data[0][key1][key2[2]].pending / interestDecimals : 0;
+                var interest_stable = data[0][key1][key2[2]].stable ? data[0][key1][key2[2]].stable / interestDecimals : 0;
                 var interest_total = interest_pending + interest_stable;
-                var stable_pending = data[0][key1][key2[3]].pending / interestDecimals;
-                var stable_stable = data[0][key1][key2[3]].stable / interestDecimals;
+                var stable_pending = data[0][key1][key2[3]].pending ? data[0][key1][key2[3]].pending / interestDecimals : 0;
+                var stable_stable = data[0][key1][key2[3]].stable ? data[0][key1][key2[3]].stable / interestDecimals : 0;
                 var stable_total = stable_pending + stable_stable;
                 var totalPrice = (interestTokenPrice * interest_total) + (stableTokenPrice * stable_total);
                 var interest_percentage = (interestTokenPrice * interest_total) / ((interestTokenPrice * interest_total) + (stableTokenPrice * stable_total)) *100;
