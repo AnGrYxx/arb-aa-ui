@@ -1,8 +1,8 @@
 'use strict';
 
-// Connect to mainnet official node 'wss://obyte.org/bb'
+// Connect to any node that accepts incomming connections https://hub.obytechina.org/worldmap.php
 var options = { reconnect: true };
-var client = new obyte.Client('wss://obyte.org/bb', options);
+var client = new obyte.Client('wss://relay.bytes.cash/bb', options);
 var assetPrices = fetch(`https://data.ostable.org/api/v1/assets`).then(response => response.json());
 
 function getAaBalances(params2) {
