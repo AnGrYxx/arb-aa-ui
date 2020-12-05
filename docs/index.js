@@ -31,7 +31,9 @@ function getAaBalances(params2) {
         var t1reserveAAs = [
             'PVL22DMGM57FOYKJRPKMQBFM2BUSJLDU',
             'Y3NP6UMNFMA6DU2DGPJN4HB65KHKVAKR',
+            'RWCUHHHFTQKOAX7XBDCOJUPL3GFNJ6IT',
             'YSGAUS4DWUORJMV3TEZXPCAEFCT4FGO3',
+            'DMJIF4I6ACBHTYZGPSBWFA4SOOHBMZXB',
             'V7Y7N7HPF3BFAQOHG7R77JRGZA7CM7VA',
             'USKWYTYD4NKBIOGPFGROG5NNTQQLISYB',
             '6DV4SOBQ5XCC44242HTRXJMRQUXYZFSI',
@@ -45,7 +47,7 @@ function getAaBalances(params2) {
             var reserveConfirmed = data[0][key1] ? data[0][key1][reserveAsset].stable / reserveDecimals : 0;
             var reservePending = data[0][key1] ? data[0][key1][reserveAsset].pending / reserveDecimals : 0;
             var reserveTotal = reserveConfirmed + reservePending;
-            var growthDecimals = data[1][t1OrInterestAsset] ? data[1][t1OrInterestAsset].decimals : 9;
+            var growthDecimals = data[1][t1OrInterestTokenName] ? data[1][t1OrInterestTokenName].decimals : 9;
             var growthPending = data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].pending / (10 ** growthDecimals) : 0;
             var growthConfirmed = data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].stable / (10 ** growthDecimals) : 0;
             var growthTotal = growthConfirmed + growthPending;
@@ -68,10 +70,10 @@ function getAaBalances(params2) {
         }
         else {
             // if stable/interest arb
-            var interestToken = $('#arb').val().split(',')[1];
+            var interestTokenName = $('#arb').val().split(',')[1];
             var stableTokenName = $('#arb').val().split(',')[2];
             var interestDecimals = $('#arb').val().split(',')[3]; // decimals of interest, stable and share token
-            var interestTokenPrice = data[1][interestToken].last_gbyte_value;
+            var interestTokenPrice = data[1][interestTokenName].last_gbyte_value;
             var stableTokenPrice = data[1][stableTokenName].last_gbyte_value;
             var stableAsset = data[1][stableTokenName].asset_id;
             var interestPending = data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].pending / interestDecimals : 0;
@@ -86,12 +88,12 @@ function getAaBalances(params2) {
 
             document.getElementById("supply").innerHTML = `${arbSupply} <br>(<a href="https://explorer.obyte.org/#${key1[0]}" target="_blank">see on explorer</a>)`;
             document.getElementById("share_value").innerHTML = `${(totalPrice / arbSupply).toFixed(2)}`;
-            document.getElementById("assets").innerHTML = `${interestTotal.toFixed(2)} ${interestToken} (${poolPercentage.toFixed(2)} %)<br>`;
+            document.getElementById("assets").innerHTML = `${interestTotal.toFixed(2)} ${interestTokenName} (${poolPercentage.toFixed(2)} %)<br>`;
             document.getElementById("assets").innerHTML += stableTotal ? `+ ${stableTotal.toFixed(2)} ${stableTokenName} (${(100 - poolPercentage).toFixed(2)} %)<br>` : '';
             document.getElementById("assets").innerHTML += `= ${totalPrice.toFixed(2)} GBYTE`;
             document.getElementById("actions").innerHTML = `
-            <a href="obyte:${key1[0]}?asset=${encodeURIComponent(t1OrInterestAsset)}"><button class="button is-small is-primary">add ${interestToken}</button></a>
-            <a href="obyte:${key1[0]}?asset=${encodeURIComponent(data[2].shares_asset)}"><button class="button is-small is-primary">withdraw ${interestToken}</button></a>`;
+            <a href="obyte:${key1[0]}?asset=${encodeURIComponent(t1OrInterestAsset)}"><button class="button is-small is-primary">add ${interestTokenName}</button></a>
+            <a href="obyte:${key1[0]}?asset=${encodeURIComponent(data[2].shares_asset)}"><button class="button is-small is-primary">withdraw ${interestTokenName}</button></a>`;
         }
     });
 }
