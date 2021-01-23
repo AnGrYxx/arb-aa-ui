@@ -28,18 +28,13 @@ function getAaBalances(params2) {
         var key2 = Object.keys(data[0][key1]);
         var t1OrInterestTokenName = $('#arb').val().split(',')[1]; // t1 or interest token name
         var t1OrInterestAsset = data[1][t1OrInterestTokenName] ? data[1][t1OrInterestTokenName].asset_id : '';
-        var t1reserveAAs = [
-            'PVL22DMGM57FOYKJRPKMQBFM2BUSJLDU',
-            'Y3NP6UMNFMA6DU2DGPJN4HB65KHKVAKR',
-            'RWCUHHHFTQKOAX7XBDCOJUPL3GFNJ6IT',
-            'YSGAUS4DWUORJMV3TEZXPCAEFCT4FGO3',
-            'DMJIF4I6ACBHTYZGPSBWFA4SOOHBMZXB',
-            'V7Y7N7HPF3BFAQOHG7R77JRGZA7CM7VA',
-            'USKWYTYD4NKBIOGPFGROG5NNTQQLISYB',
-            '6DV4SOBQ5XCC44242HTRXJMRQUXYZFSI',
-            '6KGD2SIKEIMWKUWC5E5265JKMMZHFWF2',
+        var t2stableAAs = [
+            'BCMFNDHNQDEECEWAKUXYIHFE6GXAJ2F6',
+            'ED4PXGI5HOOKMMQAOWZAOF6E3GS5JBEJ',
+            'ENVRH2JPPWBVD7A2FXPMSV6WV5M75T7A',
+            'WVCFYYQW7DFIKHNKKJZTICXFII4IYEN3',
         ];
-        if (t1reserveAAs.includes(key1[0])) {
+        if (!t2stableAAs.includes(key1[0])) {
             // if t1/reserve arb
             var reserveTokenName = $('#arb').val().split(',')[2] || 'GBYTE';
             var reserveAsset = reserveTokenName === 'GBYTE' ? 'base' : data[1][reserveTokenName].asset_id;
@@ -47,6 +42,7 @@ function getAaBalances(params2) {
             var reserveConfirmed = data[0][key1] ? data[0][key1][reserveAsset].stable / reserveDecimals : 0;
             var reservePending = data[0][key1] ? data[0][key1][reserveAsset].pending / reserveDecimals : 0;
             var reserveTotal = reserveConfirmed + reservePending;
+            var shareDecimals = $('#arb').val().split(',')[4] || reserveDecimals; // decimals of share asset
             var growthDecimals = data[1][t1OrInterestTokenName] ? data[1][t1OrInterestTokenName].decimals : 9;
             var growthPending = data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].pending / (10 ** growthDecimals) : 0;
             var growthConfirmed = data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].stable / (10 ** growthDecimals) : 0;
@@ -54,11 +50,11 @@ function getAaBalances(params2) {
             var reservePrice = data[1][reserveTokenName] ? data[1][reserveTokenName].last_gbyte_value : 1;
             var growthPrice = data[1][t1OrInterestTokenName].last_gbyte_value;
             var totalPrice = (reserveTotal * reservePrice) + (growthTotal * growthPrice);
-            var arbSupply = data[2].shares_supply / reserveDecimals;
+            var arbSupply = data[2].shares_supply / shareDecimals || 0;
             var poolPercentage = (reserveTotal * reservePrice) / ((reserveTotal * reservePrice) + (growthTotal * growthPrice)) * 100;
 
             document.getElementById("supply").innerHTML = `${arbSupply} <br>(<a href="https://explorer.obyte.org/#${key1[0]}" target="_blank">see on explorer</a>)`;
-            document.getElementById("share_value").innerHTML = `${(totalPrice / arbSupply).toFixed(2)}`;
+            document.getElementById("share_value").innerHTML = `${(arbSupply ? totalPrice / arbSupply : 0).toFixed(2)}`;
             document.getElementById("assets").innerHTML = `
                 ${(reserveTotal).toFixed(2)} ${reserveTokenName} (${poolPercentage.toFixed(2)} %)<br>
                 + ${growthTotal.toFixed(2)} ${t1OrInterestTokenName} (${(100 - poolPercentage).toFixed(2)} %)<br>
@@ -72,7 +68,7 @@ function getAaBalances(params2) {
             // if stable/interest arb
             var interestTokenName = $('#arb').val().split(',')[1];
             var stableTokenName = $('#arb').val().split(',')[2];
-            var interestDecimals = $('#arb').val().split(',')[3]; // decimals of interest, stable and share token
+            var interestDecimals = $('#arb').val().split(',')[3] || 1000000000; // decimals of interest, stable and share token
             var interestTokenPrice = data[1][interestTokenName].last_gbyte_value;
             var stableTokenPrice = data[1][stableTokenName].last_gbyte_value;
             var stableAsset = data[1][stableTokenName].asset_id;
