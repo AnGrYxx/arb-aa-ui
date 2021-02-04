@@ -42,7 +42,6 @@ function getAaBalances(params2) {
             var reserveConfirmed = data[0][key1] ? data[0][key1][reserveAsset].stable / reserveDecimals : 0;
             var reservePending = data[0][key1] ? data[0][key1][reserveAsset].pending / reserveDecimals : 0;
             var reserveTotal = reserveConfirmed + reservePending;
-            var shareDecimals = $('#arb').val().split(',')[4] || reserveDecimals; // decimals of share asset
             var growthDecimals = data[1][t1OrInterestTokenName] ? data[1][t1OrInterestTokenName].decimals : 9;
             var growthPending = data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].pending / (10 ** growthDecimals) : 0;
             var growthConfirmed = data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].stable / (10 ** growthDecimals) : 0;
@@ -50,7 +49,7 @@ function getAaBalances(params2) {
             var reservePrice = data[1][reserveTokenName] ? data[1][reserveTokenName].last_gbyte_value : 1;
             var growthPrice = data[1][t1OrInterestTokenName].last_gbyte_value;
             var totalPrice = (reserveTotal * reservePrice) + (growthTotal * growthPrice);
-            var arbSupply = data[2].shares_supply / shareDecimals || 0;
+            var arbSupply = data[2].shares_supply / reserveDecimals || 0;
             var poolPercentage = (reserveTotal * reservePrice) / ((reserveTotal * reservePrice) + (growthTotal * growthPrice)) * 100;
 
             document.getElementById("supply").innerHTML = `${arbSupply} <br>(<a href="https://explorer.obyte.org/#${key1[0]}" target="_blank">see on explorer</a>)`;
