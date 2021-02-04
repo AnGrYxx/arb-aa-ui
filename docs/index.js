@@ -102,3 +102,16 @@ function update() {
 
 $(document).ready(update);
 $('#arb').on('change', update);
+
+$('#actions').on('click', 'a', function(e) {
+    if ($('#opener option:selected').val() === 'qr') {
+        e.preventDefault();
+        $('#qr-modal .modal-body').html('').qrcode({
+            render: !!document.createElement('canvas').getContext ? 'canvas' : 'table',
+            width: 420,
+            height: 420,
+            text: $(e.target).parent('a').attr('href')
+        });
+        $('#qr-modal').modal('show');
+    }
+});
