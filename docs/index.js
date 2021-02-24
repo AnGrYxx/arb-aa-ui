@@ -57,7 +57,7 @@ function getAaBalances(params2) {
             document.getElementById("share_value").innerHTML = `${shareValue.toFixed(4)} GBYTE<br>(${(shareValue/data[1]['OUSD'].last_gbyte_value).toFixed(2)} OUSD)`;
             document.getElementById("assets").innerHTML = `
                 ${(reserveTotal).toFixed(2)} ${reserveTokenName} (${poolPercentage.toFixed(2)} %)<br>
-                + ${growthTotal.toFixed(2)} ${t1OrInterestTokenName} (${(100 - poolPercentage).toFixed(2)} %)<br>
+                + ${growthTotal.toFixed(4)} ${t1OrInterestTokenName} (${(100 - poolPercentage).toFixed(2)} %)<br>
                 = ${totalPrice.toFixed(2)} GBYTE (${(totalPrice/data[1]['OUSD'].last_gbyte_value).toFixed(0)} OUSD)`;
             document.getElementById("actions").innerHTML = `
             <a href="obyte:${key1[0]}?asset=${encodeURIComponent(reserveAsset)}"><button class="button is-small is-primary">add ${reserveTokenName}</button></a>
