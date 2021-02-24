@@ -51,13 +51,14 @@ function getAaBalances(params2) {
             var totalPrice = (reserveTotal * reservePrice) + (growthTotal * growthPrice);
             var arbSupply = data[2].shares_supply / reserveDecimals || 0;
             var poolPercentage = (reserveTotal * reservePrice) / ((reserveTotal * reservePrice) + (growthTotal * growthPrice)) * 100;
+            var shareValue = arbSupply ? totalPrice / arbSupply : 0;
 
             document.getElementById("supply").innerHTML = `${arbSupply} <br>(<a href="https://explorer.obyte.org/#${key1[0]}" target="_blank">see on explorer</a>)`;
-            document.getElementById("share_value").innerHTML = `${(arbSupply ? totalPrice / arbSupply : 0).toFixed(2)}`;
+            document.getElementById("share_value").innerHTML = `${shareValue.toFixed(4)} GBYTE<br>(${(shareValue/data[1]['OUSD'].last_gbyte_value).toFixed(2)} OUSD)`;
             document.getElementById("assets").innerHTML = `
                 ${(reserveTotal).toFixed(2)} ${reserveTokenName} (${poolPercentage.toFixed(2)} %)<br>
                 + ${growthTotal.toFixed(2)} ${t1OrInterestTokenName} (${(100 - poolPercentage).toFixed(2)} %)<br>
-                = ${totalPrice.toFixed(2)} GBYTE`;
+                = ${totalPrice.toFixed(2)} GBYTE (${(totalPrice/data[1]['OUSD'].last_gbyte_value).toFixed(0)} OUSD)`;
             document.getElementById("actions").innerHTML = `
             <a href="obyte:${key1[0]}?asset=${encodeURIComponent(reserveAsset)}"><button class="button is-small is-primary">add ${reserveTokenName}</button></a>
             <a href="obyte:${key1[0]}?asset=${encodeURIComponent(t1OrInterestAsset)}"><button class="button is-small is-primary">add ${t1OrInterestTokenName}</button></a>
@@ -80,12 +81,13 @@ function getAaBalances(params2) {
             var totalPrice = (interestTokenPrice * interestTotal) + (stableTokenPrice * stableTotal);
             var arbSupply = data[2].shares_supply / interestDecimals;
             var poolPercentage = (interestTokenPrice * interestTotal) / ((interestTokenPrice * interestTotal) + (stableTokenPrice * stableTotal)) * 100;
+            var shareValue = arbSupply ? totalPrice / arbSupply : 0;
 
             document.getElementById("supply").innerHTML = `${arbSupply} <br>(<a href="https://explorer.obyte.org/#${key1[0]}" target="_blank">see on explorer</a>)`;
-            document.getElementById("share_value").innerHTML = `${(totalPrice / arbSupply).toFixed(2)}`;
+            document.getElementById("share_value").innerHTML = `${shareValue.toFixed(4)} GBYTE<br>(${(shareValue/data[1]['OUSD'].last_gbyte_value).toFixed(2)} OUSD)`;
             document.getElementById("assets").innerHTML = `${interestTotal.toFixed(2)} ${interestTokenName} (${poolPercentage.toFixed(2)} %)<br>`;
             document.getElementById("assets").innerHTML += stableTotal ? `+ ${stableTotal.toFixed(2)} ${stableTokenName} (${(100 - poolPercentage).toFixed(2)} %)<br>` : '';
-            document.getElementById("assets").innerHTML += `= ${totalPrice.toFixed(2)} GBYTE`;
+            document.getElementById("assets").innerHTML += `= ${totalPrice.toFixed(2)} GBYTE (${(totalPrice/data[1]['OUSD'].last_gbyte_value).toFixed(0)} OUSD)`;
             document.getElementById("actions").innerHTML = `
             <a href="obyte:${key1[0]}?asset=${encodeURIComponent(t1OrInterestAsset)}"><button class="button is-small is-primary">add ${interestTokenName}</button></a>
             <a href="obyte:${key1[0]}?asset=${encodeURIComponent(data[2].shares_asset)}"><button class="button is-small is-primary">withdraw ${interestTokenName}</button></a>`;
