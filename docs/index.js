@@ -39,12 +39,12 @@ function getAaBalances(params2) {
             var reserveTokenName = $('#arb').val().split(',')[2] || 'GBYTE';
             var reserveAsset = reserveTokenName === 'GBYTE' ? 'base' : data[1][reserveTokenName].asset_id;
             var reserveDecimals = $('#arb').val().split(',')[3] || 1000000000; // decimals of reserve asset
-            var reserveConfirmed = data[0][key1] ? data[0][key1][reserveAsset].stable / reserveDecimals : 0;
-            var reservePending = data[0][key1] ? data[0][key1][reserveAsset].pending / reserveDecimals : 0;
+            var reserveConfirmed = data[0][key1] && data[0][key1][reserveAsset] ? data[0][key1][reserveAsset].stable / reserveDecimals : 0;
+            var reservePending = data[0][key1] && data[0][key1][reserveAsset] ? data[0][key1][reserveAsset].pending / reserveDecimals : 0;
             var reserveTotal = reserveConfirmed + reservePending;
             var growthDecimals = data[1][t1OrInterestTokenName] ? data[1][t1OrInterestTokenName].decimals : 9;
-            var growthPending = data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].pending / (10 ** growthDecimals) : 0;
-            var growthConfirmed = data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].stable / (10 ** growthDecimals) : 0;
+            var growthPending = data[0][key1] && data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].pending / (10 ** growthDecimals) : 0;
+            var growthConfirmed = data[0][key1] && data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].stable / (10 ** growthDecimals) : 0;
             var growthTotal = growthConfirmed + growthPending;
             var reservePrice = data[1][reserveTokenName] ? data[1][reserveTokenName].last_gbyte_value : 1;
             var growthPrice = data[1][t1OrInterestTokenName].last_gbyte_value;
@@ -72,11 +72,11 @@ function getAaBalances(params2) {
             var interestTokenPrice = data[1][interestTokenName].last_gbyte_value;
             var stableTokenPrice = data[1][stableTokenName].last_gbyte_value;
             var stableAsset = data[1][stableTokenName].asset_id;
-            var interestPending = data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].pending / interestDecimals : 0;
-            var interestConfirmed = data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].stable / interestDecimals : 0;
+            var interestPending = data[0][key1] && data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].pending / interestDecimals : 0;
+            var interestConfirmed = data[0][key1] && data[0][key1][t1OrInterestAsset] ? data[0][key1][t1OrInterestAsset].stable / interestDecimals : 0;
             var interestTotal = interestPending + interestConfirmed;
-            var stablePending = data[0][key1][stableAsset] ? data[0][key1][stableAsset].pending / interestDecimals : 0;
-            var stableConfirmed = data[0][key1][stableAsset] ? data[0][key1][stableAsset].stable / interestDecimals : 0;
+            var stablePending = data[0][key1] && data[0][key1][stableAsset] ? data[0][key1][stableAsset].pending / interestDecimals : 0;
+            var stableConfirmed = data[0][key1] && data[0][key1][stableAsset] ? data[0][key1][stableAsset].stable / interestDecimals : 0;
             var stableTotal = stablePending + stableConfirmed;
             var totalPrice = (interestTokenPrice * interestTotal) + (stableTokenPrice * stableTotal);
             var arbSupply = data[2].shares_supply / interestDecimals;
