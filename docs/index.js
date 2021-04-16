@@ -59,10 +59,14 @@ function getAaBalances(params2) {
                 ${(reserveTotal).toFixed(2)} ${reserveTokenName} (${poolPercentage.toFixed(2)} %)<br>
                 + ${growthTotal.toFixed(4)} ${t1OrInterestTokenName} (${(100 - poolPercentage).toFixed(2)} %)<br>
                 = ${totalPrice.toFixed(2)} GBYTE (${(totalPrice/data[1]['OUSD'].last_gbyte_value).toFixed(0)} OUSD)`;
-            document.getElementById("actions").innerHTML = `
-            <a href="obyte:${key1[0]}?asset=${encodeURIComponent(reserveAsset)}"><button class="button is-small is-primary">add ${reserveTokenName}</button></a>
-            <a href="obyte:${key1[0]}?asset=${encodeURIComponent(t1OrInterestAsset)}"><button class="button is-small is-primary">add ${t1OrInterestTokenName}</button></a>
-            <a href="obyte:${key1[0]}?asset=${encodeURIComponent(data[2].shares_asset)}"><button class="button is-small is-primary">withdraw both</button></a>`;
+
+            document.getElementById("actions").innerHTML = 'view only';
+            if (!$('#arb option:selected').attr('rel').startsWith('SF')) {
+                document.getElementById("actions").innerHTML = `
+                <a href="obyte:${key1[0]}?asset=${encodeURIComponent(reserveAsset)}"><button class="button is-small is-primary">add ${reserveTokenName}</button></a>
+                <a href="obyte:${key1[0]}?asset=${encodeURIComponent(t1OrInterestAsset)}"><button class="button is-small is-primary">add ${t1OrInterestTokenName}</button></a>
+                <a href="obyte:${key1[0]}?asset=${encodeURIComponent(data[2].shares_asset)}"><button class="button is-small is-primary">withdraw both</button></a>`;
+            }
         }
         else {
             // if stable/interest arb
